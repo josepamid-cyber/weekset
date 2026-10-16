@@ -1,0 +1,1478 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f3ed">
+  <title>Weekset — Workout planner</title>
+  <style>
+    :root{--ink:#202921;--muted:#788078;--paper:#f4f3ed;--card:#fffefa;--line:#e6e6dc;--green:#385b46;--lime:#d8ed9a;--coral:#ee785b;--blue:#dce9ee;--shadow:0 12px 35px #2636280a}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.45 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer} .shell{max-width:1160px;margin:auto;padding:30px 28px 70px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:38px}.brand{display:flex;gap:11px;align-items:center;font-weight:750;letter-spacing:-.04em;font-size:21px}.mark{width:34px;height:34px;border-radius:11px;background:var(--green);display:grid;place-items:center;color:var(--lime);font-size:18px}.top-note{font-size:13px;color:var(--muted)}
+    .hero{display:flex;justify-content:space-between;gap:24px;align-items:end;margin:0 0 26px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;color:var(--green);font-size:11px;font-weight:750}.hero h1{font-size:clamp(30px,4vw,45px);line-height:1.05;letter-spacing:-.055em;margin:8px 0 10px}.hero p{color:var(--muted);margin:0;max-width:570px}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 14px;color:var(--ink);font-weight:650}.btn.primary{background:var(--green);border-color:var(--green);color:white}.btn:hover{filter:brightness(.97);transform:translateY(-1px)}
+    .controls{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;align-items:end;gap:22px;flex-wrap:wrap;box-shadow:var(--shadow);margin-bottom:20px}.field{display:grid;gap:6px}.field label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:750;color:var(--muted)}select,input[type=date],input[type=text],input[type=number]{border:1px solid var(--line);border-radius:9px;background:#fff;padding:9px 11px;color:var(--ink)}.program-pick{display:flex;gap:7px}.program-pick button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 14px;font-weight:700;color:var(--muted)}.program-pick button.active{background:var(--lime);color:var(--ink);border-color:var(--lime)}.control-spacer{flex:1}.rule{font-size:12px;color:var(--muted);max-width:250px}
+    .notice{margin:12px 0;padding:10px 13px;border-radius:9px;background:#fbe7df;color:#79402e;font-size:13px}.summary{display:flex;align-items:center;justify-content:space-between;margin:27px 2px 13px}.summary h2{font-size:19px;letter-spacing:-.03em;margin:0}.summary span{font-size:12px;color:var(--muted)}.weeks{display:grid;gap:20px}.week{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}.week-head{padding:16px 19px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.week-head h3{margin:0;font-size:15px}.week-head small{color:var(--muted)}.day-grid{display:grid;grid-template-columns:repeat(5,1fr)}.day{min-width:0;padding:16px;border-right:1px solid var(--line)}.day:last-child{border:0}.day-name{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:750}.focus{font-weight:750;font-size:13px;margin:5px 0 13px;min-height:19px}.exercise{border-top:1px solid #efefe8;padding:9px 0 8px}.exercise-top{display:flex;gap:7px;align-items:start}.tier{font-size:9px;font-weight:800;border-radius:5px;padding:3px 5px;flex:none;background:var(--lime)}.tier.t2{background:var(--blue)}.tier.t3{background:#f6dfd6}.ex-name{font-size:12px;font-weight:650;line-height:1.3}.dose{font-size:11px;color:var(--muted);margin:4px 0 0 28px}.empty{padding:38px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px}.week-foot{padding:11px 18px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
+    .library{margin-top:40px}.library-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:13px}.library h2{font-size:20px;letter-spacing:-.04em;margin:5px 0 0}.library-meta{font-size:12px;color:var(--muted)}.lib-card{border:1px solid var(--line);background:var(--card);border-radius:15px;overflow:hidden}.lib-toolbar{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;gap:9px;flex-wrap:wrap}.lib-toolbar input{min-width:180px;flex:1}.exercise-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tier-column{min-width:0;border-right:1px solid var(--line)}.tier-column:last-child{border:0}.tier-heading{padding:13px 15px;background:#f8f8f2;border-bottom:1px solid var(--line);font-size:12px;font-weight:750}.tier-heading small{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:2px}.lib-item{padding:12px 11px;border-bottom:1px solid #efefe8;display:flex;align-items:center;gap:8px;min-width:0}.lib-item .ex-name{flex:1}.tag{font-size:10px;color:var(--muted);white-space:nowrap}.icon-btn{border:0;background:none;color:#9a9d94;font-size:18px;padding:0 4px}.footer{color:var(--muted);font-size:11px;margin-top:18px}.edit-grid{display:grid;gap:10px}.edit-row{display:grid;grid-template-columns:25px minmax(100px,1fr) minmax(105px,.65fr);gap:8px;align-items:center}.edit-row select,.edit-row input{width:100%;min-width:0}.slot-number{font-size:11px;color:var(--muted);font-weight:700}.rounds-field{max-width:140px}
+    .library{margin-top:40px}.library-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:13px}.library h2{font-size:20px;letter-spacing:-.04em;margin:5px 0 0}.library-meta{font-size:12px;color:var(--muted)}.lib-card{border:1px solid var(--line);background:var(--card);border-radius:15px;overflow:hidden}.lib-toolbar{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;gap:9px;flex-wrap:wrap}.lib-toolbar input{min-width:180px;flex:1}.exercise-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tier-column{min-width:0;border-right:1px solid var(--line)}.tier-column:last-child{border:0}.tier-heading{padding:13px 15px;background:#f8f8f2;border-bottom:1px solid var(--line);font-size:12px;font-weight:750}.tier-heading small{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:2px}.lib-item{padding:12px 11px;border-bottom:1px solid #efefe8;display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}.lib-item .ex-name{flex:1}.lib-item .ref-row{flex-basis:100%;margin-left:0}.review-tag{font-size:9px;padding:2px 5px;border-radius:5px;background:#f7e4c8;color:#79511e;white-space:nowrap}.tag{font-size:10px;color:var(--muted);white-space:nowrap}.icon-btn{border:0;background:none;color:#9a9d94;font-size:18px;padding:0 4px}.footer{color:var(--muted);font-size:11px;margin-top:18px}.edit-grid{display:grid;gap:10px}.edit-row{display:grid;grid-template-columns:25px minmax(100px,1fr) minmax(105px,.65fr);gap:8px;align-items:center}.edit-row select,.edit-row input{width:100%;min-width:0}.slot-number{font-size:11px;color:var(--muted);font-weight:700}.rounds-field{max-width:140px}.ref-row{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:5px 0 0 28px}.ref-row a{color:var(--green);text-decoration:underline;text-underline-offset:2px}.ref-thumb{width:28px;height:28px;object-fit:cover;border-radius:5px;border:1px solid var(--line);vertical-align:middle}.ref-link{color:var(--green);font-size:10px;white-space:nowrap}.reference-fields{border-top:1px solid var(--line);padding-top:13px;margin-top:4px}
+    .finisher{margin-top:12px;padding:10px;border-radius:10px;background:#f2f5e9}.finisher-title{font-size:11px;font-weight:750}.finisher-note{font-size:10px;color:var(--muted);margin:2px 0 6px}.finisher .exercise{padding:5px 0}.finisher .ex-name{font-size:11px}.optional-slot[hidden],.field[hidden]{display:none!important}.day-tools{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:4px 0 10px}.day-tools button{font-size:10px;padding:5px 7px}.programmed{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);white-space:nowrap}.programmed input{accent-color:var(--green);margin:0}
+    dialog{border:0;border-radius:16px;box-shadow:0 20px 90px #14201540;padding:0;max-width:600px;width:calc(100% - 30px);max-height:90vh;overflow:auto}dialog::backdrop{background:#18231c70}.modal{padding:22px}.modal h2{margin:0 0 5px;letter-spacing:-.04em}.modal p{margin:0 0 18px;color:var(--muted);font-size:13px}.form-grid{display:grid;gap:12px}.form-grid .field input,.form-grid .field select{width:100%}.modal-actions{display:flex;justify-content:end;gap:8px;margin-top:20px}
+    @media(max-width:850px){.day-grid{grid-template-columns:repeat(2,1fr)}.day:nth-child(2n){border-right:0}.day{border-bottom:1px solid var(--line)}.day:last-child{grid-column:span 2}}
+    @media(max-width:540px){.shell{padding:20px 14px 45px}.top{margin-bottom:27px}.top-note{display:none}.hero{display:block}.hero .actions{margin-top:18px}.controls{gap:14px}.control-spacer{display:none}.rule{max-width:none;width:100%}.day-grid{display:block}.day,.day:nth-child(2n),.day:last-child{border-right:0;border-bottom:1px solid var(--line)}.exercise-list{grid-template-columns:1fr}.tier-column{border-right:0;border-bottom:1px solid var(--line)}.edit-row{grid-template-columns:22px minmax(100px,1fr)}.edit-row input{grid-column:2}.week-foot{gap:10px;flex-wrap:wrap}}
+  </style>
+  <style>.weeks{gap:12px}.week-head{padding:14px 19px;cursor:pointer;list-style:none}.week-head::-webkit-details-marker{display:none}.week-head::before{content:'›';font-size:20px;color:var(--green);margin-right:11px}.week[open]>.week-head{border-bottom:1px solid var(--line)}.week[open]>.week-head::before{transform:rotate(90deg)}.week-head h3{flex:1}.analytics{margin:36px 0 0}.analytics-filters{display:flex;gap:8px;flex-wrap:wrap}.analytics-filters select{min-width:125px}.analytics-note{font-size:12px;color:var(--muted);margin:0 0 12px}.analytics-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}.analytics-stat{padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:var(--card);display:grid;gap:2px}.analytics-stat strong{font-size:21px}.analytics-stat span{font-size:11px;color:var(--muted)}.analytics-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;background:var(--card)}.analytics-table{width:100%;border-collapse:collapse;text-align:left;font-size:12px}.analytics-table th,.analytics-table td{padding:10px 13px;border-bottom:1px solid #efefe8;white-space:nowrap}.analytics-table th{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:#f8f8f2}.analytics-table tr:last-child td{border-bottom:0}.analytics-empty{text-align:center;color:var(--muted);padding:20px!important}@media(max-width:540px){.summary{flex-wrap:wrap}.analytics-filters{width:100%}.analytics-filters select{flex:1;min-width:0}.analytics-stats{gap:6px}.analytics-stat{padding:10px}.analytics-stat strong{font-size:18px}.analytics-stat span{font-size:10px}}</style>
+  <style>.analytics{margin:22px 0 0;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden}.analytics-summary{display:flex;align-items:center;gap:14px;padding:11px 14px;cursor:pointer;list-style:none}.analytics-summary::-webkit-details-marker{display:none}.analytics-summary::before{content:'›';font-size:20px;color:var(--green)}.analytics[open]>.analytics-summary{border-bottom:1px solid var(--line)}.analytics[open]>.analytics-summary::before{transform:rotate(90deg)}.analytics-heading{display:grid;gap:0}.analytics-heading .eyebrow{font-size:9px}.analytics-heading strong{font-size:14px}.analytics-summary-count{margin-left:auto;font-size:11px;color:var(--muted);white-space:nowrap}.analytics-summary-count b{color:var(--ink)}.analytics-body{padding:13px 14px 14px}.analytics-filters{margin-bottom:10px}.analytics-note{margin-bottom:8px}@media(max-width:540px){.analytics-summary{gap:8px;padding:10px}.analytics-summary-count{white-space:normal;text-align:right;font-size:10px}.analytics-body{padding:10px}}</style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top"><div class="brand"><span class="mark">↗</span> weekset</div><div class="top-note">A month of thoughtful, varied training</div></header>
+    <section class="hero"><div><div class="eyebrow">Your training month</div><h1>Make the week count.</h1><p>Build a four-week plan around your split, then keep each week feeling fresh with tiered exercise choices.</p></div><div class="actions"><button class="btn" id="printBtn">Print week</button><button class="btn" id="exportBackupBtn" type="button">Download backup</button><button class="btn" id="importBackupBtn" type="button">Restore backup</button><input id="backupFile" type="file" accept="application/json,.json" hidden><button class="btn primary" id="generateBtn">↻ &nbsp;Generate month</button></div></section>
+    <section class="controls" aria-label="Plan settings">
+      <div class="field"><label>Program</label><div class="program-pick"><button data-program="A" class="active">Program A</button><button data-program="B">Program B</button></div></div>
+      <div class="field"><label for="startDate">First Monday</label><input type="date" id="startDate"></div>
+      <div class="field"><label for="weeksCount">Plan length</label><select id="weeksCount"><option value="4" selected>4 weeks</option><option value="3">3 weeks</option><option value="5">5 weeks</option></select></div>
+      <div class="control-spacer"></div><div class="rule">6 exercises per day · 3 rounds · mix tiers 1–3</div>
+    </section>
+    <div id="notice" class="notice" role="alert" hidden></div>
+    <div class="summary"><h2 id="planTitle">Your four-week plan</h2><span id="planSub"></span><button class="btn" id="toggleWeeks" type="button">Expand all weeks</button></div>
+    <section class="weeks" id="weeks"></section>
+
+    <section class="library"><div class="library-head"><div><div class="eyebrow">Your exercise bank</div><h2 id="libraryTitle">Exercise library</h2></div><div class="library-meta" id="libraryCount"></div></div>
+      <div class="lib-card"><div class="lib-toolbar"><input id="search" type="text" placeholder="Find an exercise…" aria-label="Find an exercise"><select id="filterFocus"><option value="all">All focus areas</option></select><button class="btn" id="addExercise">＋ Add exercise</button></div><div class="exercise-list" id="exerciseList"></div></div>
+    </section>
+    <details class="analytics" aria-labelledby="analyticsTitle"><summary class="analytics-summary"><span class="analytics-heading"><span class="eyebrow">Plan history</span><strong id="analyticsTitle">Exercise usage</strong></span><span class="analytics-summary-count"><b id="usageUnique">0</b> exercises <span>·</span> <b id="usageAppearances">0</b> appearances <span>·</span> <b id="usageRounds">0</b> rounds / sets</span></summary><div class="analytics-body"><div class="analytics-filters"><select id="analyticsProgram" aria-label="Filter by program"><option value="all">Both programs</option><option value="A">Program A</option><option value="B">Program B</option></select><select id="analyticsView" aria-label="Usage time range"><option value="week">By week</option><option value="month" selected>By month</option><option value="all">All saved plans</option></select><select id="analyticsPeriod" aria-label="Select week or month"></select></div><p class="analytics-note">Counts are based on exercises in saved plans; they don’t confirm a workout was completed.</p><div class="analytics-table-wrap"><table class="analytics-table"><thead><tr><th>Exercise</th><th>Focus</th><th>Appearances</th><th>Rounds / sets</th></tr></thead><tbody id="analyticsRows"></tbody></table></div></div></details>
+    <div class="footer">Your plan and exercise library are saved in this browser. Download a backup regularly and keep it somewhere safe outside this browser.</div>
+  </main>
+  <dialog id="exerciseDialog"><form class="modal" id="exerciseForm"><h2 id="exerciseDialogTitle">Add an exercise</h2><p>Build out your own library and choose its tier and training focus.</p><div class="notice" id="referenceError" hidden></div><div class="form-grid">
+    <div class="field"><label for="newName">Exercise name</label><input id="newName" type="text" required placeholder="e.g. Dumbbell reverse lunge"></div>
+    <div class="field"><label for="newFocus">Focus area</label><select id="newFocus"></select></div>
+    <div class="field"><label for="newTier">Tier</label><select id="newTier"><option value="1">Tier 1 · Hard</option><option value="2" selected>Tier 2 · Moderate</option><option value="3">Tier 3 · Easier</option></select></div>
+    <div class="field"><label for="newDose">Rep or time range</label><input id="newDose" type="text" placeholder="8–12 reps or 30–40 sec"></div>
+    <div class="field"><label for="newGear">Equipment</label><select id="newGear"><option>Free weights</option><option>Bodyweight</option><option>Machine</option><option>Band</option><option>Other</option><option>Unspecified</option></select></div>
+    <div class="field"><label for="newProgram">Program bank</label><select id="newProgram"><option value="A">Program A</option><option value="B">Program B</option><option value="both">Both programs</option></select></div>
+    <div class="reference-fields form-grid"><div class="field"><label for="newRefPlatform">Reference source</label><select id="newRefPlatform"><option value="">No reference</option><option>Instagram saves</option><option>X saves</option><option>Other</option></select></div><div class="field"><label for="newRefNote">Reference note</label><input id="newRefNote" type="text" placeholder="Account, post title, or reminder"></div><div class="field"><label for="newRefUrl">Link (optional)</label><input id="newRefUrl" type="url" placeholder="https://…"></div><div class="field"><label for="newImage">Screenshot (optional)</label><input id="newImage" type="file" accept="image/*"></div></div>
+  </div><div class="modal-actions"><button type="button" class="btn" id="cancelAdd">Cancel</button><button class="btn primary" type="submit">Save exercise</button></div></form></dialog>
+  <dialog id="workoutDialog"><form class="modal" id="workoutForm"><h2 id="workoutTitle">Edit workout</h2><p>Choose the exercises and adjust their targets for this day.</p><div class="field rounds-field"><label for="workoutRounds">Rounds</label><input id="workoutRounds" type="number" min="1" max="10" value="3" required></div><div class="edit-grid" id="workoutSlots" style="margin-top:14px"></div><h3 id="finisherEditorTitle" style="font-size:14px;margin:20px 0 3px">Core finisher · Tabata</h3><p id="finisherEditorNote" style="margin-bottom:10px">2 rounds · 40 sec work / 20 sec rest</p><div class="field" id="bicepsCountField" hidden><label for="bicepsCount">Biceps exercises</label><select id="bicepsCount"><option value="2">2 exercises</option><option value="3">3 exercises</option></select></div><div class="field" id="bicepsRoundsField" hidden style="margin-top:10px"><label for="bicepsRounds">Biceps rounds</label><select id="bicepsRounds"><option value="2">2 rounds</option><option value="3">3 rounds</option></select></div><div class="edit-grid" id="workoutFinisherSlots"></div><div class="modal-actions"><button type="button" class="btn" id="cancelWorkout">Cancel</button><button class="btn primary" type="submit">Save workout</button></div></form></dialog>
+  <script>
+    const focusAreas=['Push','Legs','Pull','Shoulders','Glutes','Upper body','Core','Biceps'];
+    const programs={A:[['Push','Push'],['Legs','Legs'],['Pull','Pull'],['Legs','Legs'],['Shoulders','Shoulders']],B:[['Legs + glutes','Legs'],['Upper body · push / pull','Upper body'],['Legs + glutes','Legs'],['Upper body · pull / push','Upper body'],['Glutes + shoulders','Glutes']]};
+    const starter=[
+      ['Barbell bench press','Push',1,'6–10 reps','Free weights'],['Dumbbell shoulder press','Push',1,'6–10 reps','Free weights'],['Push-up','Push',2,'8–15 reps','Bodyweight'],['Dumbbell floor press','Push',2,'8–12 reps','Free weights'],['Incline push-up','Push',3,'10–15 reps','Bodyweight'],['Close-grip knee push-up','Push',3,'10–15 reps','Bodyweight'],
+      ['Barbell squat','Legs',1,'6–10 reps','Free weights'],['Romanian deadlift','Legs',1,'6–10 reps','Free weights'],['Goblet squat','Legs',2,'8–12 reps','Free weights'],['Reverse lunge','Legs',2,'8–12 reps','Bodyweight'],['Glute bridge','Legs',3,'12–15 reps','Bodyweight'],['Wall sit','Legs',3,'30–40 sec','Bodyweight'],
+      ['Barbell bent-over row','Pull',1,'6–10 reps','Free weights'],['Pull-up','Pull',1,'6–10 reps','Bodyweight'],['One-arm dumbbell row','Pull',2,'8–12 reps','Free weights'],['Resistance-band row','Pull',2,'10–15 reps','Band'],['Prone Y raise','Pull',3,'12–15 reps','Bodyweight'],['Superman hold','Pull',3,'20–30 sec','Bodyweight'],
+      ['Standing overhead press','Shoulders',1,'6–10 reps','Free weights'],['Arnold press','Shoulders',1,'8–10 reps','Free weights'],['Lateral raise','Shoulders',2,'10–15 reps','Free weights'],['Pike push-up','Shoulders',2,'6–12 reps','Bodyweight'],['Front raise','Shoulders',3,'12–15 reps','Free weights'],['Arm circles','Shoulders',3,'30–40 sec','Bodyweight'],
+      ['Barbell hip thrust','Glutes',1,'6–10 reps','Free weights'],['Dumbbell Bulgarian split squat','Glutes',1,'8–10 reps','Free weights'],['Single-leg Romanian deadlift','Glutes',2,'8–12 reps','Free weights'],['Banded lateral walk','Glutes',2,'15–25 reps','Band'],['Donkey kick','Glutes',3,'15–25 reps','Bodyweight'],['Fire hydrant','Glutes',3,'15–25 reps','Bodyweight'],
+      ['Dumbbell chest press','Upper body',1,'6–10 reps','Free weights'],['Dumbbell row','Upper body',1,'6–10 reps','Free weights'],['Incline dumbbell press','Upper body',2,'8–12 reps','Free weights'],['Lat pulldown','Upper body',2,'8–12 reps','Machine'],['Band pull-apart','Upper body',3,'15–25 reps','Band'],['Plank shoulder tap','Upper body',3,'20–30 reps','Bodyweight'],
+      ['Ab wheel rollout','Core',1,'40 sec','Bodyweight'],['Hanging leg raise','Core',1,'40 sec','Bodyweight'],['Weighted sit-up','Core',1,'40 sec','Free weights'],['Decline sit-up','Core',1,'40 sec','Bodyweight'],['Toes-to-bar','Core',1,'40 sec','Bodyweight'],
+      ['Dead bug','Core',2,'40 sec','Bodyweight'],['Reverse crunch','Core',2,'40 sec','Bodyweight'],['Bicycle crunch','Core',2,'40 sec','Bodyweight'],['Plank shoulder tap','Core',2,'40 sec','Bodyweight'],['Mountain climber','Core',2,'40 sec','Bodyweight'],
+      ['Bird dog','Core',3,'40 sec','Bodyweight'],['Knee plank','Core',3,'40 sec','Bodyweight'],['Heel tap','Core',3,'40 sec','Bodyweight'],['Bent-knee dead bug','Core',3,'40 sec','Bodyweight'],['Seated knee tuck','Core',3,'40 sec','Bodyweight'],
+      ['Barbell curl','Biceps',1,'8–15 reps','Free weights'],['Dumbbell concentration curl','Biceps',1,'8–15 reps','Free weights'],['Hammer curl','Biceps',2,'8–15 reps','Free weights'],['Band curl','Biceps',2,'8–15 reps','Band'],['Seated alternating curl','Biceps',3,'8–15 reps','Free weights']
+    ].map((e,i)=>({id:'seed-'+i,name:e[0],focus:e[1],tier:e[2],dose:e[3],gear:e[4],seed:true}));
+    const recoveredExerciseLibrary=[
+      {id:'recovered-handstand',name:'Handstand',focus:'Shoulders',tier:1,dose:'20–40 sec',gear:'Bodyweight',seed:false,program:'both'},
+  {
+    "id": "seed-0",
+    "name": "Barbell bench press",
+    "focus": "Push",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-1",
+    "name": "Dumbbell shoulder press",
+    "focus": "Push",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-2",
+    "name": "Push-up",
+    "focus": "Push",
+    "tier": 2,
+    "dose": "8–15 reps",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-3",
+    "name": "Dumbbell floor press",
+    "focus": "Push",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-4",
+    "name": "Incline push-up",
+    "focus": "Push",
+    "tier": 3,
+    "dose": "10–15 reps",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-5",
+    "name": "Close-grip knee push-up",
+    "focus": "Push",
+    "tier": 3,
+    "dose": "10–15 reps",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-6",
+    "name": "Barbell squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-7",
+    "name": "Romanian deadlift",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-8",
+    "name": "Goblet squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-12",
+    "name": "Barbell bent-over row",
+    "focus": "Pull",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-13",
+    "name": "Pull-up",
+    "focus": "Pull",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-14",
+    "name": "One-arm dumbbell row",
+    "focus": "Pull",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-15",
+    "name": "Resistance-band row",
+    "focus": "Pull",
+    "tier": 2,
+    "dose": "10–15 reps",
+    "gear": "Band",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-16",
+    "name": "Prone Y raise",
+    "focus": "Pull",
+    "tier": 3,
+    "dose": "12–15 reps",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-17",
+    "name": "Superman hold",
+    "focus": "Pull",
+    "tier": 3,
+    "dose": "20–30 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-18",
+    "name": "Standing overhead press",
+    "focus": "Shoulders",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-19",
+    "name": "Arnold press",
+    "focus": "Shoulders",
+    "tier": 1,
+    "dose": "8–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-20",
+    "name": "Lateral raise",
+    "focus": "Shoulders",
+    "tier": 2,
+    "dose": "10–15 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-21",
+    "name": "Pike push-up",
+    "focus": "Shoulders",
+    "tier": 2,
+    "dose": "6–12 reps",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-22",
+    "name": "Front raise",
+    "focus": "Shoulders",
+    "tier": 3,
+    "dose": "12–15 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-23",
+    "name": "Arm circles",
+    "focus": "Shoulders",
+    "tier": 3,
+    "dose": "30–40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-24",
+    "name": "Barbell hip thrust",
+    "focus": "Glutes",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-25",
+    "name": "Dumbbell Bulgarian split squat",
+    "focus": "Glutes",
+    "tier": 1,
+    "dose": "8–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-26",
+    "name": "Single-leg Romanian deadlift",
+    "focus": "Glutes",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-27",
+    "name": "Banded lateral walk",
+    "focus": "Glutes",
+    "tier": 2,
+    "dose": "15–25 reps",
+    "gear": "Band",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-30",
+    "name": "Dumbbell chest press",
+    "focus": "Upper body",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-31",
+    "name": "Dumbbell row",
+    "focus": "Upper body",
+    "tier": 1,
+    "dose": "6–10 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-32",
+    "name": "Incline dumbbell press",
+    "focus": "Upper body",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-33",
+    "name": "Lat pulldown",
+    "focus": "Upper body",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Machine",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-34",
+    "name": "Band pull-apart",
+    "focus": "Upper body",
+    "tier": 3,
+    "dose": "15–25 reps",
+    "gear": "Band",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-35",
+    "name": "Plank shoulder tap",
+    "focus": "Upper body",
+    "tier": 3,
+    "dose": "20–30 reps",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "B"
+  },
+  {
+    "id": "seed-36",
+    "name": "Ab wheel rollout",
+    "focus": "Core",
+    "tier": 1,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-38",
+    "name": "Weighted sit-up",
+    "focus": "Core",
+    "tier": 1,
+    "dose": "40 sec",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-39",
+    "name": "Decline sit-up",
+    "focus": "Core",
+    "tier": 1,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-40",
+    "name": "Toes-to-bar",
+    "focus": "Core",
+    "tier": 1,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-41",
+    "name": "Dead bug",
+    "focus": "Core",
+    "tier": 2,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-42",
+    "name": "Reverse crunch",
+    "focus": "Core",
+    "tier": 2,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-43",
+    "name": "Bicycle crunch",
+    "focus": "Core",
+    "tier": 2,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-44",
+    "name": "Plank shoulder tap",
+    "focus": "Core",
+    "tier": 2,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-45",
+    "name": "Mountain climber",
+    "focus": "Core",
+    "tier": 2,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-46",
+    "name": "Bird dog",
+    "focus": "Core",
+    "tier": 3,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-47",
+    "name": "Knee plank",
+    "focus": "Core",
+    "tier": 3,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-48",
+    "name": "Heel tap",
+    "focus": "Core",
+    "tier": 3,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-49",
+    "name": "Bent-knee dead bug",
+    "focus": "Core",
+    "tier": 3,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-50",
+    "name": "Seated knee tuck",
+    "focus": "Core",
+    "tier": 3,
+    "dose": "40 sec",
+    "gear": "Bodyweight",
+    "seed": true,
+    "program": "both"
+  },
+  {
+    "id": "seed-51",
+    "name": "Barbell curl",
+    "focus": "Biceps",
+    "tier": 1,
+    "dose": "8–15 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-52",
+    "name": "Dumbbell concentration curl",
+    "focus": "Biceps",
+    "tier": 1,
+    "dose": "8–15 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-53",
+    "name": "Hammer curl",
+    "focus": "Biceps",
+    "tier": 2,
+    "dose": "8–15 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-54",
+    "name": "Band curl",
+    "focus": "Biceps",
+    "tier": 2,
+    "dose": "8–15 reps",
+    "gear": "Band",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "seed-55",
+    "name": "Seated alternating curl",
+    "focus": "Biceps",
+    "tier": 3,
+    "dose": "8–15 reps",
+    "gear": "Free weights",
+    "seed": true,
+    "program": "A"
+  },
+  {
+    "id": "workbook-legs-0",
+    "name": "Ninja Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "5 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-1",
+    "name": "Nordic Curl",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "6 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-2",
+    "name": "Sumo Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "8–15 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-3",
+    "name": "Bulgarian Jumps",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-4",
+    "name": "Bulgarian Split Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "15–20 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-5",
+    "name": "Hip Thrust",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-6",
+    "name": "Deadlift",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-7",
+    "name": "Sl Hip Thrust",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-8",
+    "name": "Walking Lunges",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-9",
+    "name": "Dumbbell Lunge",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-10",
+    "name": "Sl Dead Lift To Side Lunge",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-11",
+    "name": "Lunge Front Foot Elevated",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-12",
+    "name": "Surrender Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-13",
+    "name": "Plyo Box Jump",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-14",
+    "name": "Curtsy Lunges",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-15",
+    "name": "Side Lunge",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-16",
+    "name": "Lateral Plyo Box Jump",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-17",
+    "name": "Rb Glute Press",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-18",
+    "name": "Hip Raise",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-19",
+    "name": "Sl Deadlift",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-20",
+    "name": "Good Morning",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-21",
+    "name": "Prone Hamstringe Curl Rb",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-22",
+    "name": "Glute Bridge",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-23",
+    "name": "Reverse Lunge",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-24",
+    "name": "Elev. Banded Db Hip Raise",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-25",
+    "name": "Cosack Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-26",
+    "name": "Sl Hip Raise",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-27",
+    "name": "Step Up",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-28",
+    "name": "Frog Bridge",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-29",
+    "name": "Hip Raise Elev. Feet",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-30",
+    "name": "Sl Hip Raise Elev. Foot",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-31",
+    "name": "Hip Raise + Pulse Rb",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-32",
+    "name": "Sl Dl",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-33",
+    "name": "Sl Dl B Stance",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-34",
+    "name": "Reverse Lunge + Pulse",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-35",
+    "name": "Sl Leg Glute Kick Rb",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-36",
+    "name": "Glute Bridge Frog Banded",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-37",
+    "name": "Sl Stiff Dl",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-38",
+    "name": "Wall Sit",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-39",
+    "name": "Prisoner Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-40",
+    "name": "Jump Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-41",
+    "name": "Switching Lunges",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-42",
+    "name": "Skater Hop",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-43",
+    "name": "Walking Hip Thrust",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-44",
+    "name": "Jump Squats",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-45",
+    "name": "Kick Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-46",
+    "name": "Donkey Kick",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-47",
+    "name": "Glute Kickback",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-48",
+    "name": "Fire Hydrant",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-49",
+    "name": "Adductor Rb",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-50",
+    "name": "Floor Straight Leg Lift",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-51",
+    "name": "Inner Leg Raise",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-52",
+    "name": "Squat Side To Side Band",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-53",
+    "name": "Side Kick Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-54",
+    "name": "P-Bar Leg Raise",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-55",
+    "name": "Hanging Leg Raise",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-56",
+    "name": "Running Man",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-57",
+    "name": "Dragon Flag",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-58",
+    "name": "Squat Side To Side + Jump",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-59",
+    "name": "Deadlift To Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "6–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-60",
+    "name": "Pistol Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "12–15 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-61",
+    "name": "Squat + Pulse Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "15–20 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-62",
+    "name": "Weighted Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-63",
+    "name": "Narrow Squat",
+    "focus": "Legs",
+    "tier": 1,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-64",
+    "name": "Sissy Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-65",
+    "name": "Reverse Nordic Curl",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-66",
+    "name": "Front Lunge + Pulse",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  },
+  {
+    "id": "workbook-legs-67",
+    "name": "Pulse Squat",
+    "focus": "Legs",
+    "tier": 2,
+    "dose": "8–12 reps",
+    "gear": "Unspecified",
+    "program": "both",
+    "seed": true,
+    "source": "legs-workbook"
+  }
+];
+    const workbookLegs=[
+      ['Ninja Squat',1,'5 reps'],
+      ['Nordic Curl',1,'6 reps'],
+      ['Sumo Squat',1,'8–15 reps'],
+      ['Bulgarian Jumps',1,'8–12 reps'],
+      ['Bulgarian Split Squat',1,'15–20 reps'],
+      ['Hip Thrust',1,'8–12 reps'],
+      ['Deadlift',1,'8–12 reps'],
+      ['Sl Hip Thrust',1,'8–12 reps'],
+      ['Walking Lunges',2,'8–12 reps'],
+      ['Dumbbell Lunge',2,'8–12 reps'],
+      ['Sl Dead Lift To Side Lunge',2,'8–12 reps'],
+      ['Lunge Front Foot Elevated',2,'8–12 reps'],
+      ['Surrender Squat',2,'8–12 reps'],
+      ['Plyo Box Jump',2,'8–12 reps'],
+      ['Curtsy Lunges',2,'8–12 reps'],
+      ['Side Lunge',2,'8–12 reps'],
+      ['Lateral Plyo Box Jump',2,'8–12 reps'],
+      ['Rb Glute Press',2,'8–12 reps'],
+      ['Hip Raise',2,'8–12 reps'],
+      ['Sl Deadlift',2,'8–12 reps'],
+      ['Good Morning',2,'8–12 reps'],
+      ['Prone Hamstringe Curl Rb',2,'8–12 reps'],
+      ['Glute Bridge',2,'8–12 reps'],
+      ['Reverse Lunge',2,'8–12 reps'],
+      ['Elev. Banded Db Hip Raise',2,'8–12 reps'],
+      ['Cosack Squat',2,'8–12 reps'],
+      ['Sl Hip Raise',2,'8–12 reps'],
+      ['Step Up',2,'8–12 reps'],
+      ['Frog Bridge',2,'8–12 reps'],
+      ['Hip Raise Elev. Feet',2,'8–12 reps'],
+      ['Sl Hip Raise Elev. Foot',2,'8–12 reps'],
+      ['Hip Raise + Pulse Rb',2,'8–12 reps'],
+      ['Sl Dl',2,'8–12 reps'],
+      ['Sl Dl B Stance',2,'8–12 reps'],
+      ['Reverse Lunge + Pulse',2,'8–12 reps'],
+      ['Sl Leg Glute Kick Rb',2,'8–12 reps'],
+      ['Glute Bridge Frog Banded',2,'8–12 reps'],
+      ['Sl Stiff Dl',2,'8–12 reps'],
+      ['Wall Sit',2,'8–12 reps'],
+      ['Prisoner Squat',2,'8–12 reps'],
+      ['Jump Squat',2,'8–12 reps'],
+      ['Switching Lunges',2,'8–12 reps'],
+      ['Skater Hop',2,'8–12 reps'],
+      ['Walking Hip Thrust',2,'8–12 reps'],
+      ['Jump Squats',2,'8–12 reps'],
+      ['Kick Squat',2,'8–12 reps'],
+      ['Donkey Kick',2,'8–12 reps'],
+      ['Glute Kickback',2,'8–12 reps'],
+      ['Fire Hydrant',2,'8–12 reps'],
+      ['Adductor Rb',2,'8–12 reps'],
+      ['Floor Straight Leg Lift',2,'8–12 reps'],
+      ['Inner Leg Raise',2,'8–12 reps'],
+      ['Squat Side To Side Band',2,'8–12 reps'],
+      ['Side Kick Squat',2,'8–12 reps'],
+      ['P-Bar Leg Raise',2,'8–12 reps'],
+      ['Hanging Leg Raise',2,'8–12 reps'],
+      ['Running Man',2,'8–12 reps'],
+      ['Dragon Flag',2,'8–12 reps'],
+      ['Squat Side To Side + Jump',2,'8–12 reps'],
+      ['Deadlift To Squat',1,'6–12 reps'],
+      ['Pistol Squat',1,'12–15 reps'],
+      ['Squat + Pulse Squat',1,'15–20 reps'],
+      ['Weighted Squat',1,'8–12 reps'],
+      ['Narrow Squat',1,'8–12 reps'],
+      ['Sissy Squat',2,'8–12 reps'],
+      ['Reverse Nordic Curl',2,'8–12 reps'],
+      ['Front Lunge + Pulse',2,'8–12 reps'],
+      ['Pulse Squat',2,'8–12 reps']
+    ].map((e,i)=>({id:`workbook-legs-${i}`,name:e[0],focus:'Legs',tier:e[1],dose:e[2],gear:'Unspecified',program:'both',seed:true,source:'legs-workbook'}));
+    const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}};
+    let library=read('weekset-library',starter), legacyPlan=read('weekset-plan',null), plans=read('weekset-plans',null)||{A:legacyPlan?.program==='A'?legacyPlan:null,B:legacyPlan?.program==='B'?legacyPlan:null}, selected=read('weekset-program',legacyPlan?.program||'A'), plan=plans[selected]||null, planHistory=read('weekset-plan-history',[]), removedExerciseIds=new Set(read('weekset-removed-exercises',[]));
+    // Merge the recovered browser snapshot into this browser's saved library without replacing custom entries.
+    const recoveredNameKey=name=>String(name).toLowerCase().replace(/[^a-z0-9]/g,'');
+    for(const exercise of recoveredExerciseLibrary)if(!removedExerciseIds.has(exercise.id)&&!library.some(saved=>saved.id===exercise.id|| (saved.focus===exercise.focus&&recoveredNameKey(saved.name)===recoveredNameKey(exercise.name)&&(saved.program===exercise.program||saved.program==='both'||exercise.program==='both'))))library.push({...exercise});
+    // Recover plans from older storage or saved history if the current index is empty.
+    for(const program of ['A','B'])if(!plans[program]?.weeks?.length){const historical=[...planHistory].reverse().find(saved=>saved?.program===program&&saved.weeks?.length);const fallback=legacyPlan?.program===program&&legacyPlan.weeks?.length?legacyPlan:historical;if(fallback)plans[program]=JSON.parse(JSON.stringify(fallback))}
+    if(!plans[selected]?.weeks?.length){const available=['A','B'].find(program=>plans[program]?.weeks?.length);if(available)selected=available}
+    plan=plans[selected]||null;
+    const workbookNameKey=name=>String(name).toLowerCase().replace(/[^a-z0-9]/g,'');
+    for(const exercise of workbookLegs){const key=workbookNameKey(exercise.name);library=library.filter(saved=>{if(saved.seed&&workbookNameKey(saved.name)===key){removedExerciseIds.add(saved.id);return false}return true});if(!removedExerciseIds.has(exercise.id)&&!library.some(saved=>saved.focus==='Legs'&&workbookNameKey(saved.name)===key&&(saved.program==='both'||saved.program===exercise.program)))library.push(exercise)}
+    library.push(...starter.filter(e=>!removedExerciseIds.has(e.id)&&!library.some(saved=>saved.id===e.id)));
+    const starterBank=e=>e.focus==='Push'||e.focus==='Pull'||e.focus==='Biceps'?'A':e.focus==='Upper body'||e.focus==='Glutes'?'B':'both';
+    library.forEach(e=>{if(e.seed)e.program=starterBank(e);else if(!e.program)e.program='both'});
+    library.filter(e=>e.focus==='Biceps'&&e.seed&&e.dose?.includes('sec')).forEach(e=>e.dose='8–15 reps');
+    if(!read('weekset-programmed-default-unchecked',false)){Object.values(plans).filter(Boolean).forEach(p=>p.weeks?.flat().forEach(d=>d.programmed=false));try{localStorage.setItem('weekset-programmed-default-unchecked','true')}catch{}}
+    const $=s=>document.querySelector(s);
+    const isoDate=d=>{const z=new Date(d.getTime()-d.getTimezoneOffset()*60000);return z.toISOString().slice(0,10)};
+    const start=$('#startDate'); const nextMonday=new Date();nextMonday.setDate(nextMonday.getDate()+((8-nextMonday.getDay())%7||7));start.value=isoDate(nextMonday);
+    function save(){try{plans[selected]=plan;localStorage.setItem('weekset-library',JSON.stringify(library));localStorage.setItem('weekset-plans',JSON.stringify(plans));localStorage.setItem('weekset-plan-history',JSON.stringify(planHistory));localStorage.setItem('weekset-program',selected);localStorage.setItem('weekset-removed-exercises',JSON.stringify([...removedExerciseIds]));if(plan)localStorage.setItem('weekset-plan',JSON.stringify(plan))}catch(error){console.warn('Could not save this plan in browser storage:',error)}}
+    const backupKeys=['weekset-library','weekset-plans','weekset-plan-history','weekset-program','weekset-removed-exercises','weekset-plan','weekset-programmed-default-unchecked'];
+    function readImageRecords(){return new Promise((resolve,reject)=>{openImageDb().then(db=>{const tx=db.transaction('images','readonly'),store=tx.objectStore('images'),keys=store.getAllKeys(),values=store.getAll();tx.oncomplete=()=>resolve(keys.result.map((key,i)=>({key:String(key),blob:values.result[i]})));tx.onerror=()=>reject(tx.error)}).catch(reject)})}
+    function blobToDataUrl(blob){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error);reader.readAsDataURL(blob)})}
+    function dataUrlToBlob(value){const parts=String(value).split(','),match=parts[0].match(/data:(.*?);base64/);if(!match)throw new Error('A screenshot in this backup could not be read.');const raw=atob(parts[1]),bytes=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);return new Blob([bytes],{type:match[1]||'application/octet-stream'})}
+    async function downloadBackup(){const noticeEl=$('#notice');try{save();const storage={};for(const key of backupKeys){const value=localStorage.getItem(key);if(value!==null)storage[key]=value}let images=[],screenshotsIncluded=true;try{images=await Promise.all((await readImageRecords()).map(async record=>({key:record.key,data:await blobToDataUrl(record.blob)})))}catch(error){screenshotsIncluded=false;console.warn('Screenshot files could not be included in this backup:',error)}const backup={format:'weekset-backup',version:1,createdAt:new Date().toISOString(),storage,images};const blob=new Blob([JSON.stringify(backup)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`weekset-backup-${isoDate(new Date())}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);noticeEl.textContent=screenshotsIncluded?'Backup downloaded. Keep the file somewhere outside this browser, such as Files or iCloud Drive.':'Backup downloaded with your library and plans. This browser could not include exercise screenshots.';noticeEl.hidden=false}catch(error){console.error('Backup could not be created:',error);noticeEl.textContent=`Backup could not be created: ${error?.message||'this browser could not read the saved app data.'}`;noticeEl.hidden=false}}
+    function replaceImageRecords(images){return new Promise((resolve,reject)=>{openImageDb().then(db=>{const tx=db.transaction('images','readwrite'),store=tx.objectStore('images');store.clear();for(const image of images)store.put(image.blob,image.key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Image restore failed'))}).catch(reject)})}
+    async function restoreBackup(file){const noticeEl=$('#notice');try{const backup=JSON.parse(await file.text());if(backup?.format!=='weekset-backup'||backup.version!==1||!backup.storage||typeof backup.storage['weekset-library']!=='string'||typeof backup.storage['weekset-plans']!=='string'||typeof backup.storage['weekset-plan-history']!=='string'||!Array.isArray(backup.images))throw new Error('This file is not a supported Weekset backup.');const libraryData=JSON.parse(backup.storage['weekset-library']),plansData=JSON.parse(backup.storage['weekset-plans']),historyData=JSON.parse(backup.storage['weekset-plan-history']);if(!Array.isArray(libraryData)||!plansData||typeof plansData!=='object'||!Array.isArray(historyData))throw new Error('This file is not a supported Weekset backup.');const images=backup.images.map(image=>({key:String(image.key),blob:dataUrlToBlob(image.data)}));if(!confirm(`Restore the backup from ${backup.createdAt?new Date(backup.createdAt).toLocaleString():'an earlier date'}? This replaces the exercise library and plans currently saved in this browser.`))return;for(const key of backupKeys)if(Object.hasOwn(backup.storage,key)){const value=backup.storage[key];localStorage.setItem(key,typeof value==='string'?value:JSON.stringify(value))}await replaceImageRecords(images);location.reload()}catch(error){console.error('Backup could not be restored:',error);noticeEl.textContent=error.message==='This file is not a supported Weekset backup.'?error.message:`Restore did not finish: ${error?.message||'check that the selected file is a Weekset backup.'}`;noticeEl.hidden=false}}
+    function openImageDb(){return new Promise((resolve,reject)=>{if(!('indexedDB'in window)){reject(new Error('Image storage is unavailable'));return}const request=indexedDB.open('weekset-reference-images',1);request.onupgradeneeded=()=>request.result.createObjectStore('images');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)})}
+    async function saveReferenceImage(key,file){const db=await openImageDb();return new Promise((resolve,reject)=>{const tx=db.transaction('images','readwrite');tx.objectStore('images').put(file,key);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)})}
+    async function loadReferenceImage(key){const db=await openImageDb();return new Promise((resolve,reject)=>{const request=db.transaction('images').objectStore('images').get(key);request.onsuccess=()=>resolve(request.result||null);request.onerror=()=>reject(request.error)})}
+    async function deleteReferenceImage(key){try{const db=await openImageDb();await new Promise((resolve,reject)=>{const tx=db.transaction('images','readwrite');tx.objectStore('images').delete(key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}catch(error){console.warn('Could not remove saved screenshot:',error)}}
+    const imageUrls=new Map();
+    function safeReferenceUrl(value){try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return ''}}
+    function referenceMarkup(e){if(!e.refPlatform&&!e.refNote&&!e.refUrl&&!e.imageKey)return '';const link=safeReferenceUrl(e.refUrl||'');return `<div class="ref-row">${e.refPlatform?`<span>${esc(e.refPlatform)}</span>`:''}${e.refNote?`<span>${esc(e.refNote)}</span>`:''}${link?`<a href="${esc(link)}" target="_blank" rel="noopener noreferrer">Open link</a>`:''}${e.imageKey?`<a class="ref-image-link" data-image-key="${esc(e.imageKey)}" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open screenshot reference"><img class="ref-thumb" alt="Exercise reference screenshot"></a>`:''}</div>`}
+    async function connectReferenceImages(root){for(const anchor of root.querySelectorAll('[data-image-key]')){const key=anchor.dataset.imageKey;try{let url=imageUrls.get(key);if(!url){const blob=await loadReferenceImage(key);if(!blob)continue;url=URL.createObjectURL(blob);imageUrls.set(key,url)}anchor.href=url;const img=anchor.querySelector('img');if(img)img.src=url}catch(error){console.warn('Could not load saved exercise screenshot:',error)}}}
+    function planUsesImage(key){return Object.values(plans).filter(Boolean).some(p=>p.weeks?.flat().some(d=>[...(d.exercises||[]),...(d.finisher?.exercises||[])].some(e=>e.imageKey===key)))}
+    function addDays(date,n){const d=date instanceof Date?new Date(date):new Date(date+'T12:00:00');d.setDate(d.getDate()+n);return d}
+    function fmt(d,opt={month:'short',day:'numeric'}){return d.toLocaleDateString(undefined,opt)}
+    function poolFor(focus,program=selected){return libraryForProgram(program).filter(e=>e.focus===focus)}
+    function libraryForProgram(program=selected){return library.filter(e=>!e.program||e.program==='both'||e.program===program)}
+    function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+    function pickCoreFinisher(used){return [1,2,3].map(t=>{const pool=libraryForProgram().filter(e=>e.focus==='Core'&&Number(e.tier)===t),available=shuffle(pool.filter(e=>!used[t].has(e.id))),exercise=available[0]||shuffle(pool)[0];if(exercise)used[t].add(exercise.id);return exercise?{...exercise,dose:'40 sec'}:null}).filter(Boolean)}
+    function pickBicepsFinisher(used,count=2){const pool=libraryForProgram().filter(e=>e.focus==='Biceps'),available=shuffle(pool.filter(e=>!used.has(e.id)));let picked=available.slice(0,count);if(picked.length<count)picked=picked.concat(shuffle(pool.filter(e=>!picked.some(p=>p.id===e.id))).slice(0,count-picked.length));picked.forEach(e=>used.add(e.id));return picked.map(e=>({...e,dose:'8–15 reps'}))}
+    function ensureSavedPlanFinishers(){if(!plan?.weeks)return;const coreUsed={1:new Set(),2:new Set(),3:new Set()},bicepsUsed=new Set();plan.weeks.flat().forEach(day=>{const finisher=day.finisher||{type:'core',rounds:2,exercises:day.core||[]};finisher.rounds=finisher.rounds||2;finisher.exercises?.forEach(e=>{if(finisher.type==='biceps'){bicepsUsed.add(e.id);if(e.dose?.includes('sec'))e.dose='8–15 reps'}else coreUsed[Number(e.tier)]?.add(e.id)});day.finisher=finisher});plan.weeks.forEach(week=>week.forEach((day,di)=>{const bicepsDay=plan.program==='A'&&di===3;if(bicepsDay){if(day.finisher.type!=='biceps')day.finisher={type:'biceps',rounds:2,exercises:pickBicepsFinisher(bicepsUsed,2)}}else if(day.finisher.type!=='core'||day.finisher.exercises.length!==3){day.finisher={type:'core',rounds:2,exercises:pickCoreFinisher(coreUsed)}}}));save()}
+    function copyATabataToB(){const a=plans.A,b=plans.B;if(!a?.weeks||!b?.weeks)return;b.weeks.forEach((week,wi)=>week.forEach((day,di)=>{if(di===3||day.locked)return;const source=a.weeks?.[wi]?.[di],finisher=source?.finisher||null;if(finisher?.type==='core'&&finisher.exercises?.length)day.finisher={...finisher,rounds:2,exercises:finisher.exercises.map(e=>({...e}))}}))}
+    function archivePlan(savedPlan){const key=`${savedPlan.program}:${savedPlan.start}`;planHistory=planHistory.filter(p=>`${p.program}:${p.start}`!==key);planHistory.push(JSON.parse(JSON.stringify(savedPlan)))}
+    function generate(){const notice=$('#notice');notice.hidden=true;try{const weeks=Number($('#weeksCount').value), date=start.value||isoDate(new Date()), previous=plan,sameSchedule=!!previous?.weeks?.length&&previous.start===date,today=isoDate(new Date()),used=new Set(),coreUsed={1:new Set(),2:new Set(),3:new Set()},bicepsUsed=new Set();if(previous?.weeks?.length&&!sameSchedule)archivePlan(previous);
+      if(sameSchedule)previous.weeks.forEach((week,wi)=>week.forEach((day,di)=>{const dayDate=isoDate(addDays(date,wi*7+di));if(day.locked||dayDate<today){day.exercises.forEach(e=>used.add(e.id));const finisher=day.finisher||{type:'core',exercises:day.core||[]};finisher.exercises.forEach(e=>finisher.type==='biceps'?bicepsUsed.add(e.id):coreUsed[Number(e.tier)]?.add(e.id))}}));
+      plan={program:selected,start:date,weeks:[]};for(let w=0;w<weeks;w++){const days=[];for(let day=0;day<5;day++){const [label,focus]=programs[selected][day],existingDay=sameSchedule?previous?.weeks?.[w]?.[day]:null,dayDate=isoDate(addDays(date,w*7+day)),preserveDay=existingDay&&(existingDay.locked||dayDate<today);if(preserveDay){existingDay.locked=existingDay.locked||dayDate<today;days.push(existingDay);continue}let pool=poolFor(focus,selected);if(pool.length<6)pool=libraryForProgram(selected).filter(e=>e.focus===focus|| (focus==='Legs'&&e.focus==='Glutes')||(focus==='Glutes'&&e.focus==='Shoulders'));let tierPools=[1,2,3].map(t=>pool.filter(e=>e.tier===t));
+          const profiles=[[2,2,2],[2,3,1],[3,2,1]], candidates=shuffle(profiles).filter(q=>q.every((n,i)=>tierPools[i].length>=n));let counts=candidates[0]||[2,2,2], chosen=[];
+          counts.forEach((count,i)=>{const available=shuffle(tierPools[i].filter(e=>!used.has(e.id)));let picked=available.slice(0,count);if(picked.length<count){const remaining=shuffle(tierPools[i].filter(e=>!picked.some(p=>p.id===e.id)));picked=picked.concat(remaining.slice(0,count-picked.length))}chosen.push(...picked)});
+          // If the library lacks a requested tier, fill remaining slots with other distinct exercises while preserving tier order.
+          if(chosen.length<6){const extras=shuffle(pool.filter(e=>!chosen.some(c=>c.id===e.id))).sort((a,b)=>a.tier-b.tier);chosen.push(...extras.slice(0,6-chosen.length))}
+          chosen.sort((a,b)=>a.tier-b.tier);chosen.forEach(e=>used.add(e.id));const bicepsDay=selected==='A'&&day===3,aFinisher=selected==='B'&&day!==3?plans.A?.weeks?.[w]?.[day]?.finisher:null,finisher=bicepsDay?{type:'biceps',rounds:2,exercises:pickBicepsFinisher(bicepsUsed,2)}:aFinisher?.type==='core'?{...aFinisher,rounds:2,exercises:aFinisher.exercises.map(e=>({...e}))}:{type:'core',rounds:2,exercises:pickCoreFinisher(coreUsed)};days.push({label,focus,exercises:chosen.slice(0,6).map(e=>({...e,dose:doseFor(e,selected)})),finisher});}plan.weeks.push(days)}save();if(selected==='A'){copyATabataToB();save()}renderPlan();renderLibrary();renderAnalytics();}catch(error){console.error('Could not generate workout plan:',error);notice.textContent='The plan could not be generated. Check your exercise library and try again.';notice.hidden=false}}
+    function doseFor(e,program){if(e.dose?.includes('sec'))return e.dose;if(program==='B'){return ({'6–10 reps':'6–12 reps','8–10 reps':'8–15 reps','8–12 reps':'10–18 reps','10–15 reps':'15–25 reps','12–15 reps':'15–25 reps'})[e.dose]||e.dose}return e.dose||'8–12 reps'}
+    let printWeekIndex=0;
+    function renderPlan(){const host=$('#weeks');if(!plan){host.innerHTML='<div class="empty">Choose your program and generate a month to build your first plan.</div>';$('#planSub').textContent='';return}
+      $('#planTitle').textContent=`Your ${plan.weeks.length}-week plan`;$('#planSub').textContent=`Program ${plan.program} · Starts ${fmt(new Date(plan.start+'T12:00:00'),{month:'long',day:'numeric',year:'numeric'})}`;const today=new Date();today.setHours(12,0,0,0);const currentWeek=Math.floor((today.getTime()-new Date(plan.start+'T12:00:00').getTime())/604800000),openWeek=currentWeek>=0&&currentWeek<plan.weeks.length?currentWeek:0;printWeekIndex=openWeek;
+      host.innerHTML=plan.weeks.map((week,wi)=>{const first=addDays(plan.start,wi*7),last=addDays(plan.start,wi*7+4);return `<details class="week" data-week-index="${wi}" ${wi===openWeek?'open':''}><summary class="week-head"><h3>Week ${wi+1}</h3><small>${fmt(first)} – ${fmt(last)}</small></summary><div class="week-body"><div class="day-grid">${week.map((d,di)=>`<div class="day"><div class="day-name">${['Monday','Tuesday','Wednesday','Thursday','Friday'][di]} · ${fmt(addDays(first,di),{month:'short',day:'numeric'})}</div><div class="focus">${d.label}</div><div class="day-tools"><button class="btn" data-lock-day="${wi}:${di}" aria-pressed="${!!d.locked}">${d.locked?'🔒 Locked':'Lock day'}</button><label class="programmed"><input type="checkbox" data-programmed="${wi}:${di}" ${d.programmed?'checked':''}> Programmed</label></div>${d.exercises.map(e=>`<div class="exercise"><div class="exercise-top"><span class="tier ${e.tier===2?'t2':e.tier===3?'t3':''}">T${e.tier}</span><span class="ex-name">${esc(e.name)}</span></div><div class="dose">${esc(e.dose||doseFor(e,plan.program))} · ${d.rounds||3} rounds</div>${referenceMarkup(e)}</div>`).join('')}<div class="finisher"><div class="finisher-title">${d.finisher?.type==='biceps'?'Biceps finisher':'Core finisher · Tabata'}</div><div class="finisher-note">${d.finisher?.type==='biceps'?`${d.finisher.rounds||2} rounds · reps`:'2 rounds · 40 sec work / 20 sec rest'}</div>${(d.finisher?.exercises||d.core||[]).map(e=>`<div class="exercise"><div class="exercise-top">${d.finisher?.type==='biceps'?'':`<span class="tier ${e.tier===2?'t2':e.tier===3?'t3':''}">T${e.tier}</span>`}<span class="ex-name">${esc(e.name)}</span></div>${d.finisher?.type==='biceps'?`<div class="dose">${esc(e.dose||'8–15 reps')}</div>`:''}${referenceMarkup(e)}</div>`).join('')}</div><button class="btn edit-day" data-edit-day="${wi}:${di}">Edit workout</button></div>`).join('')}</div><div class="week-foot"><span>3 rounds per exercise unless adjusted</span><span>Exercises are grouped from hard to easier</span></div></div></details>`}).join('');connectReferenceImages(host)}
+    function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function renderLibrary(){const filter=$('#filterFocus').value,query=$('#search').value.toLowerCase(),bank=libraryForProgram(selected);let shown=bank.filter(e=>(filter==='all'||e.focus===filter)&&e.name.toLowerCase().includes(query));$('#libraryTitle').textContent=`Program ${selected} exercise library` ;$('#libraryCount').textContent=`${bank.length} exercises · ${focusAreas.length} focus areas`;const host=$('#exerciseList');host.innerHTML=[1,2,3].map(t=>{const items=shown.filter(e=>Number(e.tier)===t);return `<section class="tier-column"><div class="tier-heading">Tier ${t}<small>${['Hard','Moderate','Easier'][t-1]} · ${items.length} exercises</small></div>${items.map(e=>`<div class="lib-item"><span class="ex-name">${esc(e.name)}</span><span class="tag">${esc(e.focus)}</span><button class="icon-btn" data-edit-exercise="${esc(e.id)}" aria-label="Edit ${esc(e.name)}" title="Edit exercise">✎</button><button class="icon-btn" data-remove="${esc(e.id)}" aria-label="Remove ${esc(e.name)}" title="Remove exercise">×</button>${referenceMarkup(e)}</div>`).join('')||'<div class="lib-item"><span class="tag">No exercises match</span></div>'}</section>`}).join('');connectReferenceImages(host)}
+    function renderAnalytics(){const body=$('#analyticsRows'),programFilter=$('#analyticsProgram').value,view=$('#analyticsView').value,periodSelect=$('#analyticsPeriod'),saved=new Map();planHistory.forEach(p=>saved.set(`${p.program}:${p.start}`,p));Object.values(plans).filter(Boolean).forEach(p=>saved.set(`${p.program}:${p.start}`,p));const sourcePlans=[...saved.values()].filter(p=>programFilter==='all'||p.program===programFilter),periods=new Map();sourcePlans.forEach(p=>(p.weeks||[]).forEach((week,wi)=>week.forEach((day,di)=>{const date=isoDate(addDays(p.start,wi*7+di)),monday=isoDate(addDays(p.start,wi*7));periods.set(view==='week'?monday:date.slice(0,7),true)})));const keys=[...periods.keys()].sort();periodSelect.hidden=view==='all';periodSelect.disabled=view==='all';const labels=keys.map(key=>{if(view==='week'){const d=new Date(key+'T12:00:00');return [`${key}`,`Week of ${fmt(d,{month:'short',day:'numeric',year:'numeric'})}`]}const d=new Date(key+'-01T12:00:00');return [key,fmt(d,{month:'long',year:'numeric'})]});periodSelect.innerHTML=labels.map(([v,label])=>`<option value="${esc(v)}">${esc(label)}</option>`).join('');if(view!=='all'&&keys.length&&!keys.includes(periodSelect.value))periodSelect.value=keys[keys.length-1];const period=periodSelect.value,usage=new Map();sourcePlans.forEach(p=>(p.weeks||[]).forEach((week,wi)=>week.forEach((day,di)=>{const date=isoDate(addDays(p.start,wi*7+di)),weekKey=isoDate(addDays(p.start,wi*7)),monthKey=date.slice(0,7);if(view==='week'&&weekKey!==period||view==='month'&&monthKey!==period)return;const items=[...(day.exercises||[]),...(day.finisher?.exercises||day.core||[])],mainRounds=Number(day.rounds)||3,finisherRounds=Number(day.finisher?.rounds)||2;items.forEach((exercise,index)=>{const key=exercise.id||`${exercise.focus||''}:${exercise.name}`;if(!usage.has(key))usage.set(key,{name:exercise.name||'Unnamed exercise',focus:exercise.focus||'—',appearances:0,rounds:0,days:new Set()});const row=usage.get(key);row.name=exercise.name||row.name;row.focus=exercise.focus||row.focus;row.days.add(`${p.program}:${date}`);row.rounds+=index<(day.exercises||[]).length?mainRounds:finisherRounds})})));const rows=[...usage.values()].map(row=>({...row,appearances:row.days.size})).sort((a,b)=>b.appearances-a.appearances||b.rounds-a.rounds||a.name.localeCompare(b.name));$('#usageUnique').textContent=String(rows.length);$('#usageAppearances').textContent=String(rows.reduce((sum,row)=>sum+row.appearances,0));$('#usageRounds').textContent=String(rows.reduce((sum,row)=>sum+row.rounds,0));body.innerHTML=rows.length?rows.map(row=>`<tr><td>${esc(row.name)}</td><td>${esc(row.focus)}</td><td>${row.appearances}</td><td>${row.rounds}</td></tr>`).join(''):'<tr><td class="analytics-empty" colspan="4">Generate or save a plan to see exercise usage here.</td></tr>'}
+    let editingDay=null;
+    function openWorkoutEditor(wi,di){const day=plan?.weeks?.[wi]?.[di];if(!day)return;editingDay={wi,di};$('#workoutTitle').textContent=`Edit ${day.label}`;$('#workoutRounds').value=day.rounds||3;
+      const allowed=plan.program==='A'?[programs.A[di][1]]:([0,2].includes(di)?['Legs','Glutes']:[1,3].includes(di)?['Upper body']:['Glutes','Shoulders']);
+      const choices=[1,2,3].map(t=>`<optgroup label="Tier ${t}">${libraryForProgram(plan.program).filter(e=>allowed.includes(e.focus)&&Number(e.tier)===t).map(e=>`<option value="${esc(e.id)}">${esc(e.name)} · ${esc(e.focus)}</option>`).join('')}</optgroup>`).join('');
+      $('#workoutSlots').innerHTML=day.exercises.map((e,i)=>`<div class="edit-row"><span class="slot-number">${i+1}</span><select class="slot-exercise" data-slot="${i}" aria-label="Exercise ${i+1}">${choices}</select><input class="slot-dose" data-slot="${i}" type="text" value="${esc(e.dose||doseFor(e,plan.program))}" aria-label="Rep or time target for exercise ${i+1}"></div>`).join('');
+      day.exercises.forEach((e,i)=>{const select=$(`#workoutSlots select[data-slot="${i}"]`);if(select)select.value=e.id});const finisher=day.finisher||{type:'core',rounds:2,exercises:day.core||[]};$('#bicepsCountField').hidden=finisher.type!=='biceps';$('#bicepsRoundsField').hidden=finisher.type!=='biceps';$('#bicepsCount').value=String(Math.max(2,finisher.exercises.length));$('#bicepsRounds').value=String(finisher.rounds||2);
+      if(finisher.type==='core'){$('#finisherEditorTitle').textContent='Core finisher · Tabata';$('#finisherEditorNote').textContent='2 rounds · 40 sec work / 20 sec rest';const coreLibrary=libraryForProgram(plan.program).filter(e=>e.focus==='Core'),choices=[1,2,3].map(t=>`<optgroup label="Tier ${t} · ${['Hard','Moderate','Easier'][t-1]}">${coreLibrary.filter(e=>Number(e.tier)===t).map(e=>`<option value="${esc(e.id)}">${esc(e.name)}</option>`).join('')}</optgroup>`).join('');$('#workoutFinisherSlots').innerHTML=[0,1,2].map(i=>`<div class="edit-row"><span class="slot-number">${i+1}</span><select class="core-exercise" data-slot="${i}" aria-label="Core finisher exercise ${i+1}">${choices}</select></div>`).join('');finisher.exercises.forEach((e,i)=>{const select=$(`#workoutFinisherSlots select[data-slot="${i}"]`);if(select)select.value=e.id})}
+      else{$('#finisherEditorTitle').textContent='Biceps finisher';$('#finisherEditorNote').textContent='Reps per exercise · choose 2 or 3 rounds';const options=libraryForProgram(plan.program).filter(e=>e.focus==='Biceps').map(e=>`<option value="${esc(e.id)}">${esc(e.name)}</option>`).join('');$('#workoutFinisherSlots').innerHTML=[0,1,2].map(i=>`<div class="edit-row optional-slot" ${i===2&&finisher.exercises.length<3?'hidden':''}><span class="slot-number">${i+1}</span><select class="biceps-exercise" data-slot="${i}" aria-label="Biceps finisher exercise ${i+1}">${options}</select><input class="biceps-dose" data-slot="${i}" type="text" aria-label="Rep target for biceps exercise ${i+1}" value="${esc(finisher.exercises[i]?.dose||'8–15 reps')}"></div>`).join('');finisher.exercises.forEach((ex,i)=>{const select=$(`#workoutFinisherSlots .biceps-exercise[data-slot="${i}"]`);if(select)select.value=ex.id})}$('#workoutDialog').showModal()}
+    $('#weeks').addEventListener('click',e=>{const weekHeading=e.target.closest('summary.week-head');if(weekHeading){printWeekIndex=Number(weekHeading.parentElement.dataset.weekIndex)}const lock=e.target.closest('[data-lock-day]');if(lock){const [wi,di]=lock.dataset.lockDay.split(':').map(Number);plan.weeks[wi][di].locked=!plan.weeks[wi][di].locked;save();renderPlan();return}const button=e.target.closest('[data-edit-day]');if(button){const [wi,di]=button.dataset.editDay.split(':').map(Number);openWorkoutEditor(wi,di)}});
+    $('#weeks').addEventListener('change',e=>{const checkbox=e.target.closest('[data-programmed]');if(checkbox){const [wi,di]=checkbox.dataset.programmed.split(':').map(Number);plan.weeks[wi][di].programmed=checkbox.checked;save()}});
+    $('#workoutSlots').addEventListener('change',e=>{if(!e.target.matches('.slot-exercise'))return;const i=e.target.dataset.slot,exercise=library.find(x=>x.id===e.target.value);const dose=$(`#workoutSlots .slot-dose[data-slot="${i}"]`);if(exercise&&dose)dose.value=doseFor(exercise,plan.program)});
+    $('#workoutFinisherSlots').addEventListener('change',e=>{if(!e.target.matches('.biceps-exercise'))return;const exercise=library.find(x=>x.id===e.target.value),dose=$(`#workoutFinisherSlots .biceps-dose[data-slot="${e.target.dataset.slot}"]`);if(exercise&&dose)dose.value=exercise.dose?.includes('rep')?exercise.dose:'8–15 reps'});
+    $('#bicepsCount').addEventListener('change',()=>{const third=$('#workoutFinisherSlots .optional-slot:last-child');if(third)third.hidden=$('#bicepsCount').value!=='3'});
+    $('#cancelWorkout').addEventListener('click',()=>$('#workoutDialog').close());
+    $('#workoutForm').addEventListener('submit',e=>{e.preventDefault();if(!editingDay)return;const day=plan.weeks[editingDay.wi][editingDay.di];day.rounds=Number($('#workoutRounds').value);day.exercises=[...$('#workoutSlots').querySelectorAll('.slot-exercise')].map(select=>{const source=library.find(x=>x.id===select.value);const dose=$(`#workoutSlots .slot-dose[data-slot="${select.dataset.slot}"]`).value.trim();return {...source,dose}}).filter(Boolean).sort((a,b)=>Number(a.tier)-Number(b.tier));if(day.finisher.type==='core'){day.finisher.rounds=2;day.finisher.exercises=[...$('#workoutFinisherSlots').querySelectorAll('.core-exercise')].map(select=>library.find(x=>x.id===select.value)).filter(Boolean).map(x=>({...x,dose:'40 sec'}))}else{const count=Number($('#bicepsCount').value);day.finisher.rounds=Number($('#bicepsRounds').value);day.finisher.exercises=[...$('#workoutFinisherSlots').querySelectorAll('.biceps-exercise')].slice(0,count).map(select=>{const source=library.find(x=>x.id===select.value),dose=$(`#workoutFinisherSlots .biceps-dose[data-slot="${select.dataset.slot}"]`).value.trim();return source?{...source,dose:dose||'8–15 reps'}:null}).filter(Boolean)}if(plan.program==='A'&&editingDay.di!==3&&day.finisher?.type==='core'){const target=plans.B?.weeks?.[editingDay.wi]?.[editingDay.di];if(target&&!target.locked)target.finisher={...day.finisher,rounds:2,exercises:day.finisher.exercises.map(x=>({...x}))}}save();renderPlan();$('#workoutDialog').close();editingDay=null});
+    function updateProgram(){document.querySelectorAll('[data-program]').forEach(b=>b.classList.toggle('active',b.dataset.program===selected))}
+    function setupFocus(){focusAreas.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent=f;$('#filterFocus').append(o);const o2=o.cloneNode(true);$('#newFocus').append(o2)})}
+    setupFocus();const initialProgram=selected;for(const p of ['A','B'])if(plans[p]){selected=p;plan=plans[p];ensureSavedPlanFinishers()}selected=initialProgram;plan=plans[selected]||null;copyATabataToB();save();updateProgram();if(plan){start.value=plan.start;$('#weeksCount').value=String(plan.weeks.length)}renderPlan();renderLibrary();renderAnalytics();
+    document.querySelectorAll('[data-program]').forEach(b=>b.addEventListener('click',()=>{if(selected===b.dataset.program)return;save();selected=b.dataset.program;plan=plans[selected]||null;if(plan){start.value=plan.start;$('#weeksCount').value=String(plan.weeks.length)}updateProgram();save();renderPlan();renderLibrary();renderAnalytics()}));
+    $('#analyticsProgram').addEventListener('change',renderAnalytics);$('#analyticsView').addEventListener('change',renderAnalytics);$('#analyticsPeriod').addEventListener('change',renderAnalytics);$('#toggleWeeks').addEventListener('click',()=>{const weeks=[...$('#weeks').querySelectorAll('details.week')],expand=weeks.some(w=>!w.open);weeks.forEach(w=>w.open=expand);$('#toggleWeeks').textContent=expand?'Collapse weeks':'Expand weeks'});$('#generateBtn').addEventListener('click',generate);$('#exportBackupBtn').addEventListener('click',downloadBackup);$('#importBackupBtn').addEventListener('click',()=>$('#backupFile').click());$('#backupFile').addEventListener('change',e=>{const file=e.target.files?.[0];if(file)restoreBackup(file);e.target.value=''});$('#printBtn').addEventListener('click',()=>{const weeks=[...$('#weeks').querySelectorAll('details.week')];if(!weeks.length)return;const chosen=weeks.find(w=>Number(w.dataset.weekIndex)===printWeekIndex)||weeks[0];weeks.forEach(w=>{w.classList.toggle('print-selected',w===chosen);if(w===chosen)w.open=true});window.print()});window.addEventListener('afterprint',()=>document.querySelectorAll('.week.print-selected').forEach(w=>w.classList.remove('print-selected')));$('#search').addEventListener('input',renderLibrary);$('#filterFocus').addEventListener('change',renderLibrary);
+    let editingExerciseId=null;function openExerciseEditor(exercise=null){editingExerciseId=exercise?.id||null;$('#exerciseForm').reset();$('#referenceError').hidden=true;$('#exerciseDialogTitle').textContent=exercise?'Edit exercise':'Add an exercise';$('#exerciseForm button[type=submit]').textContent=exercise?'Save changes':'Save exercise';$('#newName').value=exercise?.name||'';$('#newFocus').value=exercise?.focus||focusAreas[0];$('#newTier').value=String(exercise?.tier||2);$('#newDose').value=exercise?.dose||'';$('#newGear').value=exercise?.gear||'Free weights';$('#newProgram').value=exercise?.program||selected;$('#newRefPlatform').value=exercise?.refPlatform||'';$('#newRefNote').value=exercise?.refNote||'';$('#newRefUrl').value=exercise?.refUrl||'';$('#exerciseDialog').showModal()}$('#addExercise').addEventListener('click',()=>openExerciseEditor());$('#cancelAdd').addEventListener('click',()=>$('#exerciseDialog').close());
+    $('#exerciseForm').addEventListener('submit',async e=>{e.preventDefault();const rawUrl=$('#newRefUrl').value.trim(),refUrl=safeReferenceUrl(rawUrl);if(rawUrl&&!refUrl){$('#referenceError').textContent='Enter a full http or https link, or leave the link blank.';$('#referenceError').hidden=false;return}const id=editingExerciseId||'custom-'+Date.now(),file=$('#newImage').files[0],previous=library.find(x=>x.id===id);$('#referenceError').hidden=true;try{if(file)await saveReferenceImage(id,file)}catch(error){$('#referenceError').textContent='The screenshot could not be saved in this browser. Try a smaller image or add the reference without it.';$('#referenceError').hidden=false;return}const updated={...(previous||{}),id,name:$('#newName').value.trim(),focus:$('#newFocus').value,tier:Number($('#newTier').value),dose:$('#newDose').value.trim()||'8–12 reps',gear:$('#newGear').value,program:$('#newProgram').value,refPlatform:$('#newRefPlatform').value,refNote:$('#newRefNote').value.trim(),refUrl,imageKey:file?id:(previous?.imageKey||null)};if(previous)Object.assign(previous,updated);else library.push({...updated,seed:false});if(file&&previous?.imageKey&&previous.imageKey!==id&&!planUsesImage(previous.imageKey))deleteReferenceImage(previous.imageKey);Object.values(plans).filter(Boolean).forEach(p=>p.weeks?.flat().forEach(day=>{day.exercises=(day.exercises||[]).map(x=>x.id===id?{...x,...updated,dose:x.dose||updated.dose}:x);if(day.finisher)day.finisher.exercises=(day.finisher.exercises||[]).map(x=>x.id===id?{...x,...updated,dose:x.dose||updated.dose}:x)}));save();renderLibrary();renderPlan();e.target.reset();editingExerciseId=null;$('#exerciseDialog').close()});
+    $('#exerciseList').addEventListener('click',e=>{const editId=e.target.dataset.editExercise;if(editId){const exercise=library.find(x=>x.id===editId);if(exercise)openExerciseEditor(exercise);return}const id=e.target.dataset.remove;if(id){const removed=library.find(x=>x.id===id);if(!removed||!confirm(`Remove “${removed.name}” from the exercise library?`))return;if(removed.seed)removedExerciseIds.add(id);library=library.filter(x=>x.id!==id);if(removed?.imageKey&&!planUsesImage(removed.imageKey)){const url=imageUrls.get(removed.imageKey);if(url)URL.revokeObjectURL(url);imageUrls.delete(removed.imageKey);deleteReferenceImage(removed.imageKey)}save();renderLibrary()}});
+    const style=document.createElement('style');style.textContent='@page{size:landscape;margin:10mm}@media print{body{background:#fff}.shell{max-width:none;padding:0}.top,.hero .actions,.controls,.library,.analytics,.footer,#toggleWeeks{display:none!important}.week{display:none!important;box-shadow:none;break-inside:avoid;margin-bottom:12px}.week.print-selected{display:block!important}.week.print-selected .week-body{display:block!important}.day-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.day{padding:7px}.exercise{padding:5px 0}.week-head{padding:10px 14px}}';document.head.append(style);
+  </script>
+</body>
+</html>
